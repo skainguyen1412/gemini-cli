@@ -48,7 +48,7 @@ describe('<FooterConfigDialog />', () => {
     });
 
     await waitFor(() => {
-      expect(lastFrame()).toContain('[ ] workspace');
+      expect(lastFrame()).toContain('[ ] mode');
     });
 
     act(() => {
@@ -56,7 +56,7 @@ describe('<FooterConfigDialog />', () => {
     });
 
     await waitFor(() => {
-      expect(lastFrame()).toContain('[✓] workspace');
+      expect(lastFrame()).toContain('[✓] mode');
     });
   });
 
@@ -68,26 +68,26 @@ describe('<FooterConfigDialog />', () => {
     );
 
     await waitUntilReady();
-    // Initial order: workspace, git-branch, ...
+    // Initial order: mode, workspace, ...
     const output = lastFrame();
+    const modeIdx = output.indexOf('] mode');
     const cwdIdx = output.indexOf('] workspace');
-    const branchIdx = output.indexOf('] git-branch');
+    expect(modeIdx).toBeGreaterThan(-1);
     expect(cwdIdx).toBeGreaterThan(-1);
-    expect(branchIdx).toBeGreaterThan(-1);
-    expect(cwdIdx).toBeLessThan(branchIdx);
+    expect(modeIdx).toBeLessThan(cwdIdx);
 
-    // Move workspace down (right arrow)
+    // Move mode down (right arrow)
     act(() => {
       stdin.write('\u001b[C'); // Right arrow
     });
 
     await waitFor(() => {
       const outputAfter = lastFrame();
+      const modeIdxAfter = outputAfter.indexOf('] mode');
       const cwdIdxAfter = outputAfter.indexOf('] workspace');
-      const branchIdxAfter = outputAfter.indexOf('] git-branch');
+      expect(modeIdxAfter).toBeGreaterThan(-1);
       expect(cwdIdxAfter).toBeGreaterThan(-1);
-      expect(branchIdxAfter).toBeGreaterThan(-1);
-      expect(branchIdxAfter).toBeLessThan(cwdIdxAfter);
+      expect(cwdIdxAfter).toBeLessThan(modeIdxAfter);
     });
   });
 
@@ -121,7 +121,7 @@ describe('<FooterConfigDialog />', () => {
     expect(lastFrame()).toContain('~/project/path');
 
     // Move focus down to 'code-changes' (which has colored elements)
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 9; i++) {
       act(() => {
         stdin.write('\u001b[B'); // Down arrow
       });
@@ -140,7 +140,7 @@ describe('<FooterConfigDialog />', () => {
     await waitFor(() => {
       // It should now be checked and appear in the preview
       expect(lastFrame()).toMatch(/> \[✓\] code-changes/);
-      expect(lastFrame()).toContain('+12 -4');
+      expect(lastFrame()).toContain('+1 -4');
     });
 
     await expect(renderResult).toMatchSvgSnapshot();
@@ -187,31 +187,31 @@ describe('<FooterConfigDialog />', () => {
     // Default initial items in mock settings are 'git-branch', 'workspace', ...
     await waitFor(() => {
       const output = lastFrame();
-      expect(output).toContain('] git-branch');
       expect(output).toContain('] workspace');
+      expect(output).toContain('] mode');
     });
 
     const output = lastFrame();
-    const branchIdx = output.indexOf('] git-branch');
     const workspaceIdx = output.indexOf('] workspace');
-    expect(workspaceIdx).toBeLessThan(branchIdx);
+    const modeIdx = output.indexOf('] mode');
+    expect(modeIdx).toBeLessThan(workspaceIdx);
 
-    // Try to move workspace up (left arrow) while it's at the top
+    // Try to move mode up (left arrow) while it's at the top
     act(() => {
       stdin.write('\u001b[D'); // Left arrow
     });
 
-    // Move workspace down (right arrow)
+    // Move mode down (right arrow)
     act(() => {
       stdin.write('\u001b[C'); // Right arrow
     });
 
     await waitFor(() => {
       const outputAfter = lastFrame();
-      const bIdxAfter = outputAfter.indexOf('] git-branch');
       const wIdxAfter = outputAfter.indexOf('] workspace');
-      // workspace should now be after git-branch
-      expect(bIdxAfter).toBeLessThan(wIdxAfter);
+      const mIdxAfter = outputAfter.indexOf('] mode');
+      // mode should now be after workspace
+      expect(wIdxAfter).toBeLessThan(mIdxAfter);
     });
   });
 
