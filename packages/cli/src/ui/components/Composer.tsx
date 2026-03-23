@@ -152,7 +152,6 @@ export const Composer = ({ isFocused = true }: { isFocused?: boolean }) => {
     (showMinimalInlineLoading ||
       showMinimalBleedThroughRow ||
       shouldReserveSpaceForShortcutsHint);
-
   return (
     <Box
       flexDirection="column"
@@ -160,9 +159,7 @@ export const Composer = ({ isFocused = true }: { isFocused?: boolean }) => {
       flexGrow={0}
       flexShrink={0}
     >
-      {(!uiState.slashCommands ||
-        !uiState.isConfigInitialized ||
-        uiState.isResuming) && (
+      {(!uiState.isConfigInitialized || uiState.isResuming) && (
         <ConfigInitDisplay
           message={uiState.isResuming ? 'Resuming session...' : undefined}
         />
