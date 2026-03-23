@@ -185,25 +185,37 @@ export const Composer = ({ isFocused = true }: { isFocused?: boolean }) => {
             alignItems={isNarrow ? 'flex-start' : 'center'}
             flexGrow={1}
           >
-            {showUiDetails && showLoadingIndicator && (
-              <LoadingIndicator
-                inline
-                thought={
-                  uiState.streamingState ===
-                  StreamingState.WaitingForConfirmation
-                    ? undefined
-                    : uiState.thought
-                }
-                currentLoadingPhrase={
-                  settings.merged.ui.loadingPhrases === 'off'
-                    ? undefined
-                    : uiState.currentLoadingPhrase
-                }
-                thoughtLabel={
-                  inlineThinkingMode === 'full' ? 'Thinking...' : undefined
-                }
-                elapsedTime={uiState.elapsedTime}
-              />
+            {showUiDetails && hasToast ? (
+              <ToastDisplay />
+            ) : (
+              showUiDetails && (
+                <Box
+                  flexDirection={isNarrow ? 'column' : 'row'}
+                  alignItems={isNarrow ? 'flex-start' : 'center'}
+                >
+                  {!showLoadingIndicator && (
+                    <>
+                      {uiState.shellModeActive && (
+                        <Box marginTop={isNarrow ? 1 : 0}>
+                          <ShellModeIndicator />
+                        </Box>
+                      )}
+                      {showRawMarkdownIndicator && (
+                        <Box
+                          marginLeft={
+                            uiState.shellModeActive && !isNarrow ? 1 : 0
+                          }
+                          marginTop={
+                            uiState.shellModeActive && isNarrow ? 1 : 0
+                          }
+                        >
+                          <RawMarkdownIndicator />
+                        </Box>
+                      )}
+                    </>
+                  )}
+                </Box>
+              )
             )}
           </Box>
           <Box
@@ -304,35 +316,25 @@ export const Composer = ({ isFocused = true }: { isFocused?: boolean }) => {
               alignItems="center"
               flexGrow={1}
             >
-              {hasToast ? (
-                <ToastDisplay />
-              ) : (
-                <Box
-                  flexDirection={isNarrow ? 'column' : 'row'}
-                  alignItems={isNarrow ? 'flex-start' : 'center'}
-                >
-                  {!showLoadingIndicator && (
-                    <>
-                      {uiState.shellModeActive && (
-                        <Box marginTop={isNarrow ? 1 : 0}>
-                          <ShellModeIndicator />
-                        </Box>
-                      )}
-                      {showRawMarkdownIndicator && (
-                        <Box
-                          marginLeft={
-                            uiState.shellModeActive && !isNarrow ? 1 : 0
-                          }
-                          marginTop={
-                            uiState.shellModeActive && isNarrow ? 1 : 0
-                          }
-                        >
-                          <RawMarkdownIndicator />
-                        </Box>
-                      )}
-                    </>
-                  )}
-                </Box>
+              {showLoadingIndicator && (
+                <LoadingIndicator
+                  inline
+                  thought={
+                    uiState.streamingState ===
+                    StreamingState.WaitingForConfirmation
+                      ? undefined
+                      : uiState.thought
+                  }
+                  currentLoadingPhrase={
+                    settings.merged.ui.loadingPhrases === 'off'
+                      ? undefined
+                      : uiState.currentLoadingPhrase
+                  }
+                  thoughtLabel={
+                    inlineThinkingMode === 'full' ? 'Thinking...' : undefined
+                  }
+                  elapsedTime={uiState.elapsedTime}
+                />
               )}
             </Box>
 
