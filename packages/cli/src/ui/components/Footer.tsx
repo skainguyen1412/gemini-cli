@@ -243,7 +243,7 @@ export const Footer: React.FC = () => {
   // 0. Mode (Absolute Left, high priority)
   if (!settings.merged.ui.footer.hideApprovalMode) {
     const itemConfig = ALL_ITEMS.find((i) => i.id === 'mode');
-    const header = itemConfig?.header ?? '/mode';
+    const header = itemConfig?.header ?? 'mode';
     addCol(
       'mode',
       header,

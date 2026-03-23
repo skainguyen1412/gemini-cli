@@ -282,8 +282,8 @@ their corresponding top-level category object in your `settings.json` file.
   - **Default:** `false`
 
 - **`ui.footer.hideApprovalMode`** (boolean):
-  - **Description:** Hide the approval mode (manual, auto, plan, YOLO) in the
-    footer.
+  - **Description:** Hide the approval mode (manual, auto-accept, plan, YOLO) in
+    the footer.
   - **Default:** `false`
 
 - **`ui.footer.hideModelInfo`** (boolean):

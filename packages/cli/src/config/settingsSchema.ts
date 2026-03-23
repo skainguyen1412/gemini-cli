@@ -633,7 +633,7 @@ const SETTINGS_SCHEMA = {
             requiresRestart: false,
             default: false,
             description:
-              'Hide the approval mode (manual, auto, plan, YOLO) in the footer.',
+              'Hide the approval mode (manual, auto-accept, plan, YOLO) in the footer.',
             showInDialog: true,
           },
           hideModelInfo: {
