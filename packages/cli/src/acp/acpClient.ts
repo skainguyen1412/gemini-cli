@@ -294,6 +294,7 @@ export class GeminiAgent {
         sessionId,
         this.clientCapabilities.fs,
         config.getFileSystemService(),
+        cwd,
       );
       config.setFileSystemService(acpFileSystemService);
     }
@@ -357,6 +358,7 @@ export class GeminiAgent {
         sessionId,
         this.clientCapabilities.fs,
         config.getFileSystemService(),
+        cwd,
       );
       config.setFileSystemService(acpFileSystemService);
     }
